@@ -9,6 +9,8 @@ import Client from "./pages/admin/systemadmin/client/Client";
 import Subscription from "./pages/admin/systemadmin/subscription/Subsciption";
 import Roles from "./pages/admin/systemadmin/roles/Roles";
 import ViewExperience from "./pages/admin/experience/view/ViewExperience";
+import ViewClient from "./pages/admin/systemadmin/client/ViewClient";
+import ViewFrameModel from "./pages/admin/experience/view/ViewFrameModel";
 
 function App() {
   return (
@@ -17,9 +19,11 @@ function App() {
         <Route path="/" element={<AdminLayout />}>
           <Route index path="/experience" element={<Experience />} />
           <Route index path="/experience/:id" element={<ViewExperience />} />
+          <Route index path="/viewframemodel" element={<ViewFrameModel />} />
           <Route index path="/dashboard" element={<Dashboard />} />
           <Route index path="/client" element={<Client />} />
           <Route index path="/subscription" element={<Subscription />} />
+          <Route index path="/client/:id" element={<ViewClient />} />
           <Route index path="/roles" element={<Roles />} />
         </Route>
       </Route>

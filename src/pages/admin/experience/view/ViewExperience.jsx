@@ -14,6 +14,7 @@ import { GetExperienceById } from "../../../../services/Index";
 const ViewExperience = () => {
   const [data, setData] = useState(null);
   const params = useParams();
+  const nav = useNavigate();
 
   useEffect(() => {
     GetExperienceById(params.id)
@@ -26,12 +27,7 @@ const ViewExperience = () => {
   }, []);
 
   const handleDownload = (file, name) => {
-    const downloadLink = document.createElement("a");
-    downloadLink.href = file;
-    downloadLink.download = name;
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
+    nav(`/viewframemodel`);
   };
   const Nav = useNavigate();
   const goBack = () => {
@@ -84,6 +80,7 @@ const ViewExperience = () => {
                         </Col>
                       </Row>
                     </Card>
+                              {console.log(cont.modelFormat)}
                     <Card type="inner" title="3D Model">
                       <Row gutter={16}>
                         <Col span={12}>
@@ -112,7 +109,7 @@ const ViewExperience = () => {
                                   handleDownload(cont.model, cont.modelName)
                                 }
                               >
-                                <DownloadOutlined /> Download
+                                <DownloadOutlined /> Edit
                               </Button>
                             </div>
                           </Card>

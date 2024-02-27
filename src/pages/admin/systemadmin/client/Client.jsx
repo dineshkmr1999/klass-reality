@@ -91,7 +91,6 @@ const Client = () => {
         handleRefresh={handleRefresh}
         loading={loading}
         handleDelete={handleDelete}
-        // handleView={handleView}
       />
     </div>
   );

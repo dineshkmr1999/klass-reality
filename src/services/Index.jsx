@@ -69,3 +69,6 @@ export const DeleteSchool = async (id) => {
 export const CreateSchool = async (data) => {
   return await requests.post(`schools`,data);
 };
+export const GetIdSchool = async (id) => {
+  return await requests.get(`schools/${id}`);
+};

@@ -174,6 +174,10 @@ const AddExperience = ({ open, showModal, onClose, handleRefresh }) => {
     }
   };
 
+  const skip = () => {
+    setCurrent(current + 1);
+  };
+
   const steps = [
     {
       title: "Experience",
@@ -270,20 +274,27 @@ const AddExperience = ({ open, showModal, onClose, handleRefresh }) => {
             Back
           </Button>
           {current < steps.length - 1 && (
-            <Button
-              type="primary"
-              onClick={() => next()}
-              disabled={disableFields}
-              loading={formLoader}
-            >
-              Next
-            </Button>
+            <>
+              {current > 0 && ( // Conditional rendering of the Skip button for steps beyond the first one
+                <Button onClick={skip}>
+                  Skip
+                </Button>
+              )}
+              <Button
+                type="primary"
+                onClick={() => next()}
+                disabled={disableFields}
+                loading={formLoader}
+              >
+                Next
+              </Button>
+            </>
           )}
           {current === steps.length - 1 && (
             <Button
               type="primary"
               onClick={() => next()}
-              disabled={disableFields}
+              disabled={false}
               loading={formLoader}
             >
               Submit

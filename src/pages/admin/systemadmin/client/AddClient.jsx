@@ -87,9 +87,28 @@ const AddClient = ({ showDrawer, onClose, open, handleRefresh }) => {
       })),
     };
     CreateSchool(formDataToSend)
-      .then(() => {
-        message.success("Client created successfully");
-        handleRefresh();
+      .then((res) => {
+        console.log(res);
+        if (res.code == 409) {
+          message.error(res.message);
+        } else {
+          message.success("School Created Successfull!");
+
+          setFormData({
+            schoolName: "",
+            schoolAddress: "",
+            schoolType: "",
+            gradeLevelsServed: "",
+            schoolDistrict: "",
+            schoolIdentificationNumber: "",
+            schoolEmail: "",
+            schoolPhoneNumber: "",
+            subscriptionName: "",
+            users: [],
+          });
+          handleRefresh();
+          onClose();
+        }
       })
       .catch((error) => {
         // Handle error
@@ -158,6 +177,19 @@ const AddClient = ({ showDrawer, onClose, open, handleRefresh }) => {
               Submit
             </Button>
           </Space>
+        }
+        footer={
+          <>
+          <Row gutter={16} className="text-left"></Row>
+          <div className="text-right p-2">
+          <Space>
+            <Button onClick={onClose}>Cancel</Button>
+            <Button onClick={handleSubmit} type="primary">
+              Submit
+            </Button>
+          </Space>
+          </div>
+          </>
         }
       >
         <Form layout="vertical" hideRequiredMark>

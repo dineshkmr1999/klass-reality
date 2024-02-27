@@ -1,4 +1,4 @@
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined } from "@ant-design/icons";
 import {
   Button,
   Flex,
@@ -11,6 +11,7 @@ import {
 import PropTypes from "prop-types";
 import { PatchSchool } from "../../../../services/Index";
 import EditClient from "./EditClient";
+import ViewClient from "./ViewClient";
 
 const ClientTable = ({
   data,
@@ -32,6 +33,7 @@ const ClientTable = ({
         // Optionally, handle errors if the patch request fails
       });
   };
+
 
   const columns = [
     {
@@ -89,6 +91,13 @@ const ClientTable = ({
       align: "center",
       render: (text, record) => (
         <Flex wrap="wrap" gap="small" justify="center">
+          <Tooltip placement="top" title="View">
+          
+             <ViewClient
+              data={record}
+              handleRefresh={handleRefresh}
+            />
+          </Tooltip>
           <Tooltip placement="top" title="Edit">
             <EditClient
               data={record}

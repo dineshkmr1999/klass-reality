@@ -1,66 +1,135 @@
-import { UploadOutlined } from "@ant-design/icons";
-import { Button, Col, Row, Typography, Upload } from "antd";
+import { UploadOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Button, Col, Row, Typography, Upload, Space } from "antd"; // Import Space component
 import TextArea from "antd/es/input/TextArea";
-import  { useEffect } from "react";
+import { useState, useEffect } from "react";
 
-const Model3D = ({ content, setContent, setDisableFields }) => {
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    const duplicateObject = { ...content };
-    setContent({ ...duplicateObject, [name]: value });
-  };
-  const handleFile = (file) => {
-    const duplicateObject = { ...content };
-    duplicateObject.model = file;
-    setContent(duplicateObject);
+const Model3D = ({ initialContent, setContent, setDisableFields }) => {
+  const [contentData, setContentData] = useState(initialContent || []);
+  const [scriptData, setScriptData] = useState(
+    Array(contentData.length).fill("")
+  );
+
+  const handleFile = (file, index) => {
+    const updatedContent = [...contentData];
+    updatedContent[index] = { ...updatedContent[index], model: file };
+    setContentData(updatedContent);
   };
 
-  const handleRemove = () => {
-    setContent((prev) => ({
-      ...prev,
-      model: "",
-    }));
+  const handleRemove = (index) => {
+    const updatedContent = [...contentData];
+    updatedContent.splice(index, 1);
+    setContentData(updatedContent);
+    const updatedScriptData = [...scriptData];
+    updatedScriptData.splice(index, 1);
+    setScriptData(updatedScriptData);
   };
 
   useEffect(() => {
-    if (content.model != "" && content.modelScript.length > 5) {
-      setDisableFields(false);
+    console.log(scriptData);
+    console.log(contentData);
+    if (contentData.every((item) => item.model && scriptData.length > 5)) {
+      setDisableFields(true); // Enable the next button if all conditions are met
     } else {
-      setDisableFields(true);
+      setDisableFields(false); // Disable the next button if any condition is not met
     }
-  }, [content]);
+  }, [contentData, scriptData, setDisableFields]);
+
+  const handleEdit = (e, index) => {
+    const updatedScriptData = [...scriptData];
+    updatedScriptData[index] = e.target.value;
+    setScriptData(updatedScriptData);
+  };
+
+  // Render one default row if contentData is empty
+  if (contentData.length === 0) {
+    return (
+      <Row gutter={16} style={{ marginBottom: 16 }}>
+        <Col span={24}>
+          <Upload
+            name={`model-0`}
+            listType="picture"
+            beforeUpload={(file) => {
+              handleFile(file, 0);
+              return false;
+            }}
+            accept=".fbx,.glb,.gltf"
+            maxCount={1}
+            onRemove={() => handleRemove(0)}
+            fileList={[]}
+          >
+            <Button icon={<UploadOutlined />}>Upload</Button>
+          </Upload>
+        </Col>
+        <Col span={24}>
+          <Typography>Script</Typography>
+          <TextArea
+            name={`modelScript-0`}
+            value={scriptData[0] || ""}
+            onChange={(e) => handleEdit(e, 0)}
+            placeholder="Please enter your Model script"
+            autoSize={{ minRows: 12, maxRows: 12 }}
+          />
+        </Col>
+      </Row>
+    );
+  }
+
   return (
-    <Row gutter={16}>
-      <Col span={24}>
-        <Upload
-          name="model"
-          listType="picture"
-          beforeUpload={(file) => {
-            handleFile(file);
-            return false;
-          }}
-          accept=".fbx,.glb,.gltf"
-          maxCount={1}
-          onRemove={handleRemove}
-          fileList={content?.model == "" ? [] : [content?.model]}
-        >
-          <Button icon={<UploadOutlined />}>Upload</Button>
-        </Upload>
-      </Col>
-      <Col span={24}>
-        <Typography>Script</Typography>
-        <TextArea
-          name="modelScript"
-          value={content.modelScript}
-          onChange={handleChange}
-          placeholder="Please enter your Model script"
-          autoSize={{
-            minRows: 12,
-            maxRows: 12,
-          }}
-        />
-      </Col>
-    </Row>
+    <>
+      {contentData.map((item, index) => (
+        <Row key={index} gutter={16} style={{ marginBottom: 16 }}>
+          <Col span={24}>
+            <Upload
+              name={`model-${index}`}
+              listType="picture"
+              beforeUpload={(file) => {
+                handleFile(file, index);
+                return false;
+              }}
+              accept=".fbx,.glb,.gltf"
+              maxCount={1}
+              onRemove={() => handleRemove(index)}
+              fileList={item.model ? [item.model] : []}
+            >
+              <Button icon={<UploadOutlined />}>Upload</Button>
+            </Upload>
+          </Col>
+          <Col span={24}>
+            <Typography>Script</Typography>
+            <TextArea
+              name={`modelScript-${index}`}
+              value={scriptData[index] || ""}
+              onChange={(e) => handleEdit(e, index)}
+              placeholder="Please enter your Model script"
+              autoSize={{ minRows: 12, maxRows: 12 }}
+            />
+          </Col>
+          <Col span={24}>
+            <Space
+              align="center"
+              style={{ width: "100%", paddingTop: "12px" }}
+              justify="space-between"
+            >
+              <Button type="primary" danger onClick={() => handleRemove(index)}>
+                Delete
+              </Button>
+              {contentData.length < 3 && (
+                <Button
+                  onClick={() =>
+                    setContentData([
+                      ...contentData,
+                      { model: null, modelScript: "" },
+                    ])
+                  }
+                >
+                  Add
+                </Button>
+              )}
+            </Space>
+          </Col>
+        </Row>
+      ))}
+    </>
   );
 };
 

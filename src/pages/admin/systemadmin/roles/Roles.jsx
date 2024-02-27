@@ -1,10 +1,26 @@
-import  { useState, useEffect } from "react";
-import { Divider, Table, Checkbox, Row, Col, message } from "antd";
+import { useState, useEffect } from "react";
+import {
+  Divider,
+  Table,
+  Checkbox,
+  Row,
+  Col,
+  message,
+  Tag,
+  Tooltip,
+  Flex,
+  Button,
+} from "antd";
 import { GetRoles, patchRoles } from "../../../../services/Index";
 import { resetApplication } from "../../../../redux/features/counter/applicationSlice";
 import { resetUserData } from "../../../../redux/features/counter/adminSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import {
+  CloseCircleOutlined,
+  DeleteOutlined,
+  EditOutlined,
+} from "@ant-design/icons";
 
 const Roles = () => {
   const [roles, setRoles] = useState(null);
@@ -43,9 +59,7 @@ const Roles = () => {
         if (checked) {
           role.permissions.push(permission);
         } else {
-          role.permissions = role.permissions.filter(
-            (p) => p !== permission
-          );
+          role.permissions = role.permissions.filter((p) => p !== permission);
         }
       }
       return role;
@@ -64,35 +78,62 @@ const Roles = () => {
       title: "Roles",
       dataIndex: "role",
       key: "role",
-      width: "40%",
+      width: "20%",
+      render: (text) => text.charAt(0).toUpperCase() + text.slice(1), // Capitalize first letter
     },
     {
       title: "Permission",
       dataIndex: "permissions",
       render: (_, record) => (
         <Row gutter={[12, 12]}>
-          {record.permissions.map((permission) => (
-            <Col key={permission} span={8}>
-              <Checkbox
-                value={permission}
-                onChange={(e) =>
-                  handleCheckboxChange(record._id, permission, e.target.checked)
-                }
-              >
-                {permission}
-              </Checkbox>
+          {record.permissions.map((permission, i) => (
+            <Col key={permission + i} span={8}>
+              <li>
+                <Tag closeIcon={<CloseCircleOutlined />} color="#ba28a9">
+                  {permission.charAt(0).toUpperCase() + permission.slice(1)}
+                </Tag>
+              </li>
             </Col>
+            // <Col key={permission+i} span={8}>
+            //   <Checkbox
+            //     value={permission}
+            //     disabled
+            //     onChange={(e) =>
+            //       handleCheckboxChange(record._id, permission, e.target.checked)
+            //     }
+            //   >
+            //     {permission.charAt(0).toUpperCase() + permission.slice(1)} {/* Capitalize first letter */}
+            //   </Checkbox>
+            // </Col>
           ))}
         </Row>
       ),
       key: "permission",
-      width: "60%",
+      width: "80%",
     },
+    // {
+    //   width: "10%",
+    //   title: "Action",
+    //   key: "id",
+    //   align: "center",
+    //   render: (text, record) => (
+    //     <Flex wrap="wrap" gap="small" justify="center">
+    //       <Tooltip placement="top" title="Edit">
+    //         <Button type="primary" disabled icon={<EditOutlined />} />
+    //       </Tooltip>
+    //       <Tooltip placement="top" title="Delete">
+    //       <Button type="primary" disabled icon={<DeleteOutlined />} danger />
+    //       </Tooltip>
+    //     </Flex>
+    //   ),
+    // },
   ];
 
   return (
     <>
-      <Divider orientation="left" style={{fontSize: "20px"}}>Roles & Permissions</Divider>
+      <Divider orientation="left" style={{ fontSize: "20px" }}>
+        Roles & Permissions
+      </Divider>
       <Table
         columns={columns}
         loading={loading}

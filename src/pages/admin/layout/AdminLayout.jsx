@@ -16,10 +16,9 @@ const { Header, Content, Sider } = Layout;
 
 const AdminLayout = () => {
   const {
-    token: { colorBgContainer, borderRadiusLG },
+    token: {  borderRadiusLG },
   } = theme.useToken();
   const Roles = useSelector((state) => state.admin.user.role);
-  console.log(Roles);
   const location = useLocation();
   const [active] = useState(location.pathname.replace("/", ""));
   const User = useSelector((state) => state.admin.user);
@@ -127,11 +126,7 @@ const AdminLayout = () => {
         }}
       >
         <Header
-          style={{
-            padding: 0,
-            background: "#fff",
-          }}
-          className="flex justify-end px-4 items-center"
+          className="flex justify-end px-4 items-center layout-bg"
         >
           <Dropdown
             overlay={
@@ -146,7 +141,7 @@ const AdminLayout = () => {
                 backgroundColor: "gray",
                 verticalAlign: "middle",
               }}
-              size="large"
+              size={50}
               gap={2}
               className="cursor-pointer"
             >

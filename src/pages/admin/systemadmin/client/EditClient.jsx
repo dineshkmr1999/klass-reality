@@ -132,6 +132,19 @@ const EditClient = ({ data, handleRefresh }) => {
             </Button>
           </Space>
         }
+        footer={
+          <>
+          <Row gutter={16} className="text-left"></Row>
+          <div className="text-right p-2">
+          <Space>
+            <Button onClick={Close}>Cancel</Button>
+            <Button onClick={handleSubmit} type="primary">
+              Submit
+            </Button>
+          </Space>
+          </div>
+          </>
+        }
       >
         <Form layout="vertical" form={form}>
           <Row gutter={16}>
