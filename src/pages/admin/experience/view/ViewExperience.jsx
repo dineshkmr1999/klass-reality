@@ -80,28 +80,21 @@ const ViewExperience = () => {
                         </Col>
                       </Row>
                     </Card>
-                              {console.log(cont.modelFormat)}
+                    {console.log(cont.modelFormat)}
                     <Card type="inner" title="3D Model">
                       <Row gutter={16}>
                         <Col span={12}>
                           <Card>
                             <div className="flex flex-col gap-0 items-center h-96">
-                              {cont.modelFormat == ".fbx" ? (
-                                <img
-                                  src={NotSupported}
-                                  alt=""
-                                  className="w-[40%]"
-                                />
-                              ) : (
-                                <ModelViewer
-                                  modelUrl={cont.model}
-                                  style={{
-                                    width: "100%",
-                                    height: "100%",
-                                    focus: true,
-                                  }}
-                                />
-                              )}
+                              <ModelViewer
+                                modelUrl={cont.model}
+                                style={{
+                                  width: "100%",
+                                  height: "100%",
+                                  focus: true,
+                                }}
+                              />
+
                               <Button
                                 className="mt-5"
                                 type="primary"

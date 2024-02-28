@@ -13,15 +13,17 @@ import {
   DeleteSession,
   DeploySession,
   GetAllExperience,
+  RefreshToken,
 } from "../../../services/Index";
 import ExperienceTable from "./ExperienceTable";
 import AddExperience from "./Add/AddExperience";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { resetApplication } from "../../../redux/features/counter/applicationSlice";
 import { useNavigate } from "react-router-dom";
 import { resetUserData } from "../../../redux/features/counter/adminSlice";
 import { SendOutlined } from "@ant-design/icons";
 import subjectOptions from "../../../json/subject";
+import { useLocalStorage } from "../../../redux/useLocalStorage";
 
 const Experience = () => {
   const [experience, setExperience] = useState([]);
@@ -36,6 +38,9 @@ const Experience = () => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const nav = useNavigate();
+  const [, setAccessToken] = useLocalStorage("accessToken", null);
+  const refreshtoken = useSelector((state) =>  state.admin.refreshToken);
+  console.log(refreshtoken)
 
   const showModal = () => {
     setOpen(true);
@@ -111,9 +116,10 @@ const Experience = () => {
         let errRes = err.response.data;
         if (errRes.code == 401) {
           message.error(err.response.data.message);
-          dispatch(resetApplication());
-          dispatch(resetUserData());
-          nav("/login");
+          setAccessToken(refreshtoken),
+          RefreshToken().then((res)=>{
+            setAccessToken(res.refreshToken)
+          })
         } else {
           message.error(err.response.data.message);
           setLoading(false);

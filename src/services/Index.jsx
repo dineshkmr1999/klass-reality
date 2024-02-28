@@ -4,6 +4,9 @@ import requests from "./httpServices";
 export const UserLogin = async (data) => {
   return await requests.post(`auth/login`, data);
 };
+export const RefreshToken = async () => {
+  return await requests.post(`/auth/refresh-tokens`);
+};
 export const CreateSession = async (data) => {
   return await requests.post(`sessions`, data);
 };

@@ -17,7 +17,13 @@ body {
   background-color: #f8f8f8;
 }
 
-.layout-bg{
+.layout-bg {
   background: url(./assets/bg.png);
-  
+}
+
+#unity-container {
+  width: 100% !important;
+}
+#unity-canvas {
+  width: 100% !important;
 }

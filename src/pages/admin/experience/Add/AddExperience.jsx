@@ -25,6 +25,7 @@ const AddExperience = ({ open, showModal, onClose, handleRefresh }) => {
   const dispatch = useDispatch();
   const sessionData = useSelector((state) => state.application.session);
   const contentData = useSelector((state) => state.application.contentData);
+ 
   const assessmentData = useSelector(
     (state) => state.application.assessmentData
   );
